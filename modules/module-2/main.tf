@@ -358,6 +358,12 @@ resource "aws_launch_template" "ecs_launch_template" {
 
   vpc_security_group_ids = [aws_security_group.ecs_sg.id]
   user_data              = base64encode(data.template_file.user_data.rendered)
+
+  metadata_options {
+    http_tokens                 = "required" # enforce IMDSv2
+    http_endpoint               = "enabled"  # keep endpoint on
+    http_put_response_hop_limit = 1          # typical default
+  }
 }
 
 resource "aws_autoscaling_group" "ecs_asg" {
