@@ -3609,6 +3609,11 @@ resource "aws_instance" "goat_instance" {
   depends_on = [
     aws_s3_object.upload_temp_object_2
   ]
+  metadata_options {
+    http_tokens                 = "required" # enforce IMDSv2
+    http_endpoint               = "enabled"  # keep endpoint on
+    http_put_response_hop_limit = 1          # typical default
+  }
 }
 
 
